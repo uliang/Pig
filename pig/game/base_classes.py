@@ -19,6 +19,10 @@ class PlayerBase(ABC):
     turn_score:int = 0 
     dice:Dice = Dice.get_single_d6(seed=None)
 
+    @property
+    def has_won(self):
+        return self.score >= 100
+        
     @abstractmethod
     def get_move(self, opponent): 
         """

@@ -32,7 +32,7 @@ def game_loop(p1:Player, p2:Player):
                 return 0
 
 
-        if player.score >= 100:
+        if player.has_won:
             break 
     
     msg.good(f"{player} wins!")
