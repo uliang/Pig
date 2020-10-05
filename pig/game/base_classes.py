@@ -1,5 +1,6 @@
 from collections import defaultdict
 from typing import ClassVar
+from abc import ABC, abstractmethod
 
 import attr 
 from wasabi import msg
@@ -9,7 +10,7 @@ from .constants import const
 
 
 @attr.s(auto_attribs=True, repr=False)
-class PlayerBase:
+class PlayerBase(ABC):
     action_dict:ClassVar = defaultdict(lambda: 'unknown', 
         {"H": "hold", "R": "roll"})
 
@@ -33,7 +34,11 @@ class PlayerBase:
             player_type = yield cls(name) if name else cls(f"P{i}")
             name = "PigMachine"
 
+    @abstractmethod
     def get_move(self, opponent): 
+        """
+        Override this method to implement movement aquisition logic
+        """
         _turn_msg = f"Make your move {self}. "  \
                     + f"Your current score is {self.score} " \
                     + f"while your opponent's score is {opponent.score} " \
