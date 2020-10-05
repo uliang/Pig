@@ -18,7 +18,7 @@ from .train import training_loop
 from .game.player import Player
 from .game.dice import Dice
 from .game.ai_wrapper import open_policy, Npc
-from .game.constants import states
+from .game.constants import const
 
 
 class Application: 
@@ -94,11 +94,11 @@ class Application:
         p1 = next(player_gen)        
 
         if num_players == 1: 
-            p2 = player_gen.send(states.NPC)
+            p2 = player_gen.send(const.NPC)
             with open_policy(ai_file) as policy: 
                 p2 = Npc(p2, policy)
         elif num_players == 2:
-            p2 = player_gen.send(states.PC)
+            p2 = player_gen.send(const.PC)
 
         coin = Dice(1, 2, None)
         if coin() == 1: 

@@ -7,7 +7,7 @@ import attr
 from wasabi import msg
 
 from .dice import Dice
-from .constants import states
+from .constants import const
 from .base_classes import PlayerBase
 
 

@@ -5,7 +5,7 @@ import attr
 from wasabi import msg
 
 from .dice import Dice
-from .constants import states
+from .constants import const
 
 
 @attr.s(auto_attribs=True, repr=False)
@@ -20,12 +20,12 @@ class PlayerBase:
 
     @classmethod
     def from_input(cls): 
-        player_type = states.PC
+        player_type = const.PC
         for i in range(1, 3): 
             
-            if player_type is states.PC: 
+            if player_type is const.PC: 
                 name = input(f"Player {i} name (Press Enter to accept default): ")
-            elif player_type is states.NPC:
+            elif player_type is const.NPC:
                 msg.text(f"Your challenger is {name} 🐷!")
             
             msg.text( f"Player {i} {name} created" )
@@ -47,7 +47,7 @@ class PlayerBase:
         elif code in 'roll hold'.split():
             action = code 
         elif code in 'xX': 
-            return states.EXIT
+            return const.EXIT
         
         effect = getattr(self, action, None) 
         
@@ -63,19 +63,19 @@ class PlayerBase:
         
         if result == 1: 
             msg.warn(f"{self} has lost all points! 😭")
-            return states.END_TURN
+            return const.END_TURN
 
         self.turn_score += result
         
         msg.text(f"{self} total for this turn is {self.turn_score}")
 
-        return states.CONTINUE
+        return const.CONTINUE
 
     def hold(self):
         msg.text(f"{self} has held. Adding turn score of {self.turn_score} to score.")
 
         self.score += self.turn_score
-        return states.END_TURN 
+        return const.END_TURN 
 
     def reset_turn_score(self):
         self.turn_score = 0
