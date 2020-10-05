@@ -12,6 +12,22 @@ Each player maintains his or her own personal score tally. The objective of the 
 
 3. If he decides to "hold", the turn total is add to his score and his turn ends. 
 
+## Playing Pig 
+This game can be played in single player or two player mode. 
+
+To activate two player mode (the default) type 
+```bash
+pig play -p 2
+```
+
+For single player mode type 
+```bash
+pig play -p 1 -ai <source-ai-hdf5>
+``` 
+In single player mode, you play against the computer who has been trained with value iteration. You will need to provide the path to the trained policy function
+in order for the program to work. Training a policy function can be done with the
+`pig train` command detailed below. 
+
 ## The experiment 
 Can one program a computer to play Pig against a human opponent? 
 
