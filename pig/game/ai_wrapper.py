@@ -7,11 +7,11 @@ import h5py
 
 
 @attr.s
-class AiAssistant: 
+class Npc: 
     _player = attr.ib() 
     _policy = attr.ib() 
 
-
+    
 def policy_func(P, i, j, k):
     if i + k >= 100:
         return 'hold' 
@@ -24,7 +24,7 @@ def policy_func(P, i, j, k):
 
 
 @contextmanager
-def AiWrapper(player, ai_file): 
+def open_policy(ai_file): 
     pfile = h5py.File(ai_file, 'r')
     policy_dset = pfile['policy']
     
@@ -33,8 +33,7 @@ def AiWrapper(player, ai_file):
     
     policy = partial(policy_func, P)
 
-    wrapped_player = AiAssistant(player, policy) 
     try:
-        yield wrapped_player
+        yield policy
     finally:
         pfile.close()
