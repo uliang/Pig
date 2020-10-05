@@ -1,5 +1,3 @@
-__all__=['Player']
-
 from collections import defaultdict
 from typing import ClassVar
 
@@ -11,7 +9,7 @@ from .constants import states
 
 
 @attr.s(auto_attribs=True, repr=False)
-class Player:
+class PlayerBase:
     action_dict:ClassVar = defaultdict(lambda: 'unknown', 
         {"H": "hold", "R": "roll"})
 
@@ -35,7 +33,13 @@ class Player:
             player_type = yield cls(name) if name else cls(f"P{i}")
             name = "PigMachine"
 
-
+    def get_move(self, opponent): 
+        _turn_msg = f"Make your move {self}. "  \
+                    + f"Your current score is {self.score} " \
+                    + f"while your opponent's score is {opponent.score} " \
+                    + "(R=roll, H=hold): "
+        return _turn_msg
+        
     def send(self, code): 
         if code in 'rhRH': 
             code = code.upper()

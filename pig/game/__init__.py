@@ -5,23 +5,22 @@ import plac
 from wasabi import msg
 
 from .dice import * 
-from .player import *
+from .player_types import *
 from .constants import states
 
 
 def game_loop(p1:Player, p2:Player):
-    for player in cycle([p1, p2]): 
+    
+    for player, opponent in cycle([(p1, p2), (p2, p1)]): 
         player.reset_turn_score() 
         
         signal = states.CONTINUE
         
         while signal is states.CONTINUE: 
 
-            choice = input(
-                f"Make your move {player}." + 
-                f"Your current score is {player.score} (R=roll, H=hold): ")
+            move = player.get_move(opponent)
             try: 
-                signal = player.send(choice)
+                signal = player.send(move)
             except ValueError:
                 continue
             

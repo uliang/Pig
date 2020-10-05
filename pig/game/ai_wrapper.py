@@ -5,12 +5,6 @@ import attr
 import numpy as np
 import h5py 
 
-
-@attr.s
-class Npc: 
-    _player = attr.ib() 
-    _policy = attr.ib() 
-
     
 def policy_func(P, i, j, k):
     if i + k >= 100:
