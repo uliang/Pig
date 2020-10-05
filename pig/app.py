@@ -18,6 +18,7 @@ from .train import training_loop
 from .game.player import Player
 from .game.dice import Dice
 from .game.ai_wrapper import open_policy, Npc
+from .game.constants import states
 
 
 class Application: 
@@ -90,15 +91,14 @@ class Application:
         msg.info( "playing Pig. Press X to exit.")
         player_gen = Player.from_input()
 
-        p1 = next(player_gen)
-        msg.text( f"Player 1 {p1} created" )
-        
-        p2 = next(player_gen)
-        msg.text( f"Player 2 {p2} created" )
+        p1 = next(player_gen)        
 
         if num_players == 1: 
+            p2 = player_gen.send(states.NPC)
             with open_policy(ai_file) as policy: 
                 p2 = Npc(p2, policy)
+        elif num_players == 2:
+            p2 = player_gen.send(states.PC)
 
         coin = Dice(1, 2, None)
         if coin() == 1: 
