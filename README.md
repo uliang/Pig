@@ -20,11 +20,25 @@ One approach to programming such an AI is to use reinforcement learning. This ap
 To run the experiment clone and build this repository from source. Then run 
 
 ```bash
-$ pig train 
+# To see command options 
+$ pig train -h 
+
+$ pig train <destination file>
 ``` 
-from the command line. 
+from the command line. The file is stored in h5py format. 
 
 This trains the policy function the AI uses to play this game. You can then try out the AI by playing a game against it and see how you do. 
+
+## Building the application
+We use the build library `pep517` which can be installed using `pip install pep517`. 
+
+Clone this repository and run 
+
+```bash
+$ python -m pep517.build .
+``` 
+
+from the root folder of the project directory. 
 
 ## References 
 [1] The UMAP Journal 25(1) (2004), pp. 25–47
