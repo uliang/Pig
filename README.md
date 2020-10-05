@@ -2,7 +2,7 @@
 An illustration of reinforcement learning via the game Pig. 
 
 ## Rules
-ig is a two player game played with the following rules. 
+Pig is a two player game played with the following rules. 
 
 Each player maintains his or her own personal score tally. The objective of the game is to reach a score of 100. Players take turns. On each turn, a player must decide between two actions "roll" and "hold":
 
