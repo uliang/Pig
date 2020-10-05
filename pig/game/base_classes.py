@@ -22,13 +22,13 @@ class PlayerBase(ABC):
     @property
     def has_won(self):
         return self.score >= 100
-        
+
     @abstractmethod
     def get_move(self, opponent): 
         """
         Override this method to implement movement aquisition logic
         """
-        _turn_msg = f"Make your move {self}. "  \
+        _turn_msg = f"\n\nMake your move {self}. "  \
                     + f"Your current score is {self.score} " \
                     + f"while your opponent's score is {opponent.score} " \
                     + "(R=roll, H=hold): "
