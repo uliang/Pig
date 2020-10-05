@@ -15,9 +15,9 @@ from wasabi import msg
 
 from .game import game_loop
 from .train import training_loop
-from .game.player import Player
+from .game.player_types import Player, Npc
 from .game.dice import Dice
-from .game.ai_wrapper import open_policy, Npc
+from .game.ai_wrapper import open_policy
 from .game.constants import const
 
 

@@ -28,7 +28,7 @@ class Player(PlayerBase):
 
 @attr.s
 class Npc(PlayerBase): 
-    policy = attr.ib() 
+    policy = attr.ib(default=None) 
 
     def __attrs_post_init__(self): 
         i = 2
