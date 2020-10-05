@@ -93,12 +93,12 @@ class Application:
 
         p1 = next(player_gen)        
 
-        if num_players == 1: 
-            p2 = player_gen.send(const.NPC)
+        if num_players == 1:  
             with open_policy(ai_file) as policy: 
-                p2 = Npc(p2, policy)
+                p2 = Npc(name="PigMachine", policy=policy)
+        
         elif num_players == 2:
-            p2 = player_gen.send(const.PC)
+            p2 = next(player_gen)
 
         coin = Dice(1, 2, None)
         if coin() == 1: 

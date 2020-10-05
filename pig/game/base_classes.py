@@ -19,21 +19,6 @@ class PlayerBase(ABC):
     turn_score:int = 0 
     dice:Dice = Dice.get_single_d6(seed=None)
 
-    @classmethod
-    def from_input(cls): 
-        player_type = const.PC
-        for i in range(1, 3): 
-            
-            if player_type is const.PC: 
-                name = input(f"Player {i} name (Press Enter to accept default): ")
-            elif player_type is const.NPC:
-                msg.text(f"Your challenger is {name} 🐷!")
-            
-            msg.text( f"Player {i} {name} created" )
-            
-            player_type = yield cls(name) if name else cls(f"P{i}")
-            name = "PigMachine"
-
     @abstractmethod
     def get_move(self, opponent): 
         """

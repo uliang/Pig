@@ -12,6 +12,14 @@ from .base_classes import PlayerBase
 
 
 class Player(PlayerBase): 
+    @classmethod
+    def from_input(cls): 
+        for i in range(1, 3): 
+            name = input(f"Player {i} name (Press Enter to accept default): ")
+            msg.text( f"Player {i} {name} created" )
+
+            yield cls(name) if name else cls(f"P{i}")
+
     def get_move(self, opponent):
         turn_msg = super().get_move(opponent)
         choice = input(turn_msg)
@@ -20,9 +28,21 @@ class Player(PlayerBase):
 
 @attr.s
 class Npc(PlayerBase): 
-    _policy = attr.ib() 
+    policy = attr.ib() 
+
+    def __attrs_post_init__(self): 
+        i = 2
+        msg.text(f"Your challenger is {self.name} 🐷!")
+        msg.text( f"Player {i} {self.name} created" )
 
     def get_move(self, opponent): 
-        pass 
+        i, j, k = self.score, opponent.score, self.turn_score
+
+        move = self.policy(i,j,k)
+
+        turn_msg = "{} {}".format(super().get_move(opponent), move)
+        msg.info(turn_msg)
+        
+        return move 
 
     
