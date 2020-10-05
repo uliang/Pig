@@ -22,9 +22,19 @@ class Player:
 
     @classmethod
     def from_input(cls): 
+        player_type = states.PC
         for i in range(1, 3): 
-            name = input(f"Player {i} name (Press Enter to accept default): ")
-            yield cls(name) if name else cls(f"P{i}")
+            
+            if player_type is states.PC: 
+                name = input(f"Player {i} name (Press Enter to accept default): ")
+            elif player_type is states.NPC:
+                msg.text(f"Your challenger is {name} 🐷!")
+            
+            msg.text( f"Player {i} {name} created" )
+            
+            player_type = yield cls(name) if name else cls(f"P{i}")
+            name = "PigMachine"
+
 
     def send(self, code): 
         if code in 'rhRH': 
