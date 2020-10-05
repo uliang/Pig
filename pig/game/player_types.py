@@ -31,9 +31,7 @@ class Npc(PlayerBase):
     policy = attr.ib(default=None) 
 
     def __attrs_post_init__(self): 
-        i = 2
         msg.text(f"Your challenger is {self.name} 🐷!")
-        msg.text( f"Player {i} {self.name} created" )
 
     def get_move(self, opponent): 
         i, j, k = self.score, opponent.score, self.turn_score
@@ -41,7 +39,7 @@ class Npc(PlayerBase):
         move = self.policy(i,j,k)
 
         turn_msg = "{} {}".format(super().get_move(opponent), move)
-        msg.info(turn_msg)
+        msg.text(turn_msg)
         
         return move 
 
