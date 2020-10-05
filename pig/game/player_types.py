@@ -26,7 +26,7 @@ class Player(PlayerBase):
         return choice
 
 
-@attr.s
+@attr.s(repr=False)
 class Npc(PlayerBase): 
     policy = attr.ib(default=None) 
 
