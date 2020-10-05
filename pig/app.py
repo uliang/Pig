@@ -37,7 +37,7 @@ class Application:
     def train(self, 
         destination: (
             "Name of file to save training results." +
-            " File will be saved as .h5py format so file extension" +
+            " File will be saved as .hdf5 format so file extension" +
             " need not be provided.", 
             "positional", 
             None, 
@@ -65,7 +65,7 @@ class Application:
         
         if not dry_run: 
             try: 
-                filename = destination+'.h5py' 
+                filename = destination+'.hdf5' 
                 with h5py.File(filename, 'w') as h5f: 
                     h5f.create_dataset('policy', data=policy_matrix)
                     msg.good(f"Policy function written to {filename}.")
