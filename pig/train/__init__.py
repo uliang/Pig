@@ -32,11 +32,12 @@ def reward(old_state, new_state):
 
 def value(P, i,j,k): 
     """
-    For Pig, the value of a winning state is 1, otherwise it is
-    the probability of winning the game from the current state.
+    For Pig, the value of a state is 
+    the probability of winning the game from a nonwinning state 
+    and 0 otherwise. 
     """
     if iswin(i,j,k):
-        return 1
+        return 0
     return P[i,j,k]
 
 def init_policy(array): 
@@ -50,10 +51,10 @@ def init_policy(array):
     return a 
 
 def training_loop(max_iter=100, tol=0.001): 
-    P = rand(100, 100, 100) 
+    P = np.ones((100, 100, 100)) 
     delta = 0 
 
-    P = init_policy(P)
+    # P = init_policy(P)
     V = partial(value, P)
     cache_indexes = list(indexer(P))
 
