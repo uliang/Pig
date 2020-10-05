@@ -22,7 +22,7 @@ def open_policy(ai_file):
     pfile = h5py.File(ai_file, 'r')
     policy_dset = pfile['policy']
     
-    P = np.zeros(100, 100, 100)
+    P = np.zeros((100, 100, 100))
     policy_dset.read_direct(P)
     
     policy = partial(policy_func, P)
