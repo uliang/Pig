@@ -76,7 +76,7 @@ class Application:
         num_players: (
             "Numer of players. Valid values are 1 or 2", 
             "option", 
-            "np", 
+            "p", 
             int, 
             ["1", "2"])=2
     ):
