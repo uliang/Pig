@@ -17,6 +17,7 @@ from .game import game_loop
 from .train import training_loop
 from .game.player import Player
 from .game.dice import Dice
+from .game.ai_wrapper import open_policy, Npc
 
 
 class Application: 
@@ -78,7 +79,12 @@ class Application:
             "option", 
             "p", 
             int, 
-            ["1", "2"])=2
+            ["1", "2"])=2, 
+        ai_file: (
+            "File path to hdf5 file containing the policy matrix.", 
+            "option", 
+            "ai", 
+            str)='./pig/train/models/pig_ai.hdf5'
     ):
         "Play Pig" 
         msg.info( "playing Pig. Press X to exit.")
@@ -89,7 +95,11 @@ class Application:
         
         p2 = next(player_gen)
         msg.text( f"Player 2 {p2} created" )
-        
+
+        if num_players == 1: 
+            with open_policy(ai_file) as policy: 
+                p2 = Npc(p2, policy)
+
         coin = Dice(1, 2, None)
         if coin() == 1: 
             players = [p1, p2]
