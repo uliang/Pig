@@ -80,7 +80,7 @@ class Application:
             "option", 
             "p", 
             int, 
-            ["1", "2"])=2, 
+            [1,2])=2, 
         ai_file: (
             "File path to hdf5 file containing the policy matrix.", 
             "option", 
