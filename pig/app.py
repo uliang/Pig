@@ -110,9 +110,6 @@ class Application:
         
         exit_code = game_loop(*players)
         
-        # if not exit_code: 
-        #     raise plac.Interpreter.Exit
-
     def q(self): 
         "Quit application" 
         raise plac.Interpreter.Exit
