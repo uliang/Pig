@@ -38,7 +38,7 @@ class Npc(PlayerBase):
 
         move = self.policy(i,j,k)
 
-        turn_msg = "{} {}".format(super().get_move(opponent), move)
+        turn_msg = super().get_move(opponent) + move 
         msg.text(turn_msg)
         
         return move 
