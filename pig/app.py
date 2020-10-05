@@ -16,6 +16,7 @@ from wasabi import msg
 from .game import game_loop
 from .train import training_loop
 from .game.player import Player
+from .game.dice import Dice
 
 
 class Application: 
@@ -89,7 +90,15 @@ class Application:
         p2 = next(player_gen)
         msg.text( f"Player 2 {p2} created" )
         
-        exit_code = game_loop(p1, p2)
+        coin = Dice(1, 2, None)
+        if coin() == 1: 
+            players = [p1, p2]
+            msg.text(f"{p1} goes first.")
+        else:
+            players = [p2, p1]
+            msg.text(f"{p2} goes first.")
+        
+        exit_code = game_loop(*players)
         
         # if not exit_code: 
         #     raise plac.Interpreter.Exit
