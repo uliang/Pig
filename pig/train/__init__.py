@@ -41,7 +41,7 @@ def training_loop(max_iter=100, tol=0.001):
             R_ss' = 1 iff s -> s' is a transition from nonwinning to winning.
             """ 
             delta = 0 
-            for i, j, k in cache_indexes: # indexer ensures we only loop over non winning states
+            for i, j, k in cache_indexes:   # indexer ensures we only loop over non winning states
                 v = P[i,j,k]
                 roll = 1 - P[j,i,0]         # rolled a 1. 
                 
@@ -50,8 +50,8 @@ def training_loop(max_iter=100, tol=0.001):
 
                 roll /= 6
                 
-                hold = 1 - P[j, i+k, 0] if i+k < 100 else 0
-
+                hold = 1 - P[j, i+k, 0] if i+k < 100 else 0     # So that the AI learns to hold in a 
+                                                                # nonwinning state
                 P[i, j, k] = max(hold, roll) 
                 delta = max(delta, np.abs(v-P[i,j,k]))
                 
