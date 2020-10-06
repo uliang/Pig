@@ -49,7 +49,7 @@ class Application:
             "Maximum number of iterations.", 
             "option", 
             "m", 
-            int)=3, 
+            int)=10, 
         tolerence: (
             "Convergence threshold.", 
             "option", 
