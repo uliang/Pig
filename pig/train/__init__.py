@@ -3,11 +3,8 @@ from functools import partial
 import numpy as np 
 from numpy.random import rand 
 
-from wasabi import msg
+from wasabi import msg, table, row
 from tqdm import tqdm
-
-def iswin(i,j,k): 
-    return i+k >= 100
 
 def indexer(array): 
     imax, jmax, kmax = array.shape
@@ -20,50 +17,20 @@ def indexer(array):
         for k in range(100-j): 
             yield j,i,k 
 
-def reward(old_state, new_state): 
-    """
-    Set reward to be 1 if old_state is a nonwinning state 
-    and new_state is a winning state and 0 for all other 
-    transitions. 
-    """
-    if not iswin(*old_state) and iswin(*new_state):
-        return 1 
-    return 0 
-
-def value(P, i,j,k): 
-    """
-    For Pig, the value of a state is 
-    the probability of winning the game from a nonwinning state 
-    and 0 otherwise. 
-    """
-    if iswin(i,j,k):
-        return 0
-    return P[i,j,k]
-
-def init_policy(array): 
-    a = np.array(array)
-    
-    with np.nditer(a, order='K', 
-                   flags=['multi_index'], op_flags=['readwrite']) as it: 
-        for x in it: 
-            x[...]=1 if iswin(*it.multi_index) else x
-    
-    return a 
 
 def training_loop(max_iter=100, tol=0.001): 
-    P = np.ones((100, 100, 100)) 
+    P = rand(100, 100, 100)
     delta = 0 
 
-    # P = init_policy(P)
-    V = partial(value, P)
     cache_indexes = list(indexer(P))
 
-    for _ in range(max_iter): 
-        
-        v = np.array(P)
-        
-        for i, j, k in tqdm(cache_indexes, ncols=80, 
-                            bar_format='{elapsed}|{bar}|{percentage:.0f}% [{rate_fmt}]'):
+    print(row(data=('Iteration', 'Delta'), aligns=('c', 'c'), widths=(10, 10)))
+    print("="*25)
+    for iter_count in range(max_iter): 
+                
+        bar_fmt = '{elapsed}|{bar}|{percentage:.0f}% {postfix[0]}{postfix[1][Delta]:>6.4f} [{rate_fmt}]'
+        with tqdm(total=len(cache_indexes), ncols=60, unit_scale=1, postfix=["Delta=", dict(Delta=0)], 
+                  bar_format=bar_fmt, leave=False) as t:
             """
             The estimated value for each action is:
             'hold' = V(s'), 
@@ -73,19 +40,29 @@ def training_loop(max_iter=100, tol=0.001):
 
             R_ss' = 1 iff s -> s' is a transition from nonwinning to winning.
             """ 
-            roll = (1/6)*(
-                reward((i, j, k), (i, j, 0)) + V(i, j, 0)
-                + sum(reward((i, j, k), (i, j, k+m)) + V(i, j, k+m)
-                    for m in range(2,7))
-            )  
-            hold = V(i+k, j, 0)
+            delta = 0 
+            for i, j, k in cache_indexes: # indexer ensures we only loop over non winning states
+                v = P[i,j,k]
+                roll = 1 - P[j,i,0]         # rolled a 1. 
+                
+                for m in range(2,7): 
+                    roll += P[i,j, k+m] if m < 100-i-k else 1   # reward only transition to winning states
 
-            P[i, j, k] = max(hold, roll) 
+                roll /= 6
+                
+                hold = 1 - P[j, i+k, 0] if i+k < 100 else 0
 
-        delta = np.abs(v - P).max()
-        msg.text(f"Delta: {delta:.4f}")
+                P[i, j, k] = max(hold, roll) 
+                delta = max(delta, np.abs(v-P[i,j,k]))
+                
+                t.postfix[1]["Delta"] = delta
+                t.update(1)
 
-        if delta < tol:
-            break
+            # delta = np.abs(v - P).max()
+
+            if delta < tol:
+                break
+
+        print(row(data=(f"{iter_count+1}", f"{delta:.3f}"), aligns=('c', 'c'), widths=(10,10)))
     
     return P
