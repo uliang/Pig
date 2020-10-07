@@ -85,7 +85,7 @@ class Application:
             "File path to hdf5 file containing the policy matrix.", 
             "option", 
             "ai", 
-            str)='./pig/train/models/pig_ai.hdf5'
+            str)=None, 
     ):
         "Play Pig" 
         msg.info( "playing Pig. Press X to exit.")
