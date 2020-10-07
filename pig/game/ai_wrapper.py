@@ -1,5 +1,6 @@
 from contextlib import contextmanager 
 from functools import partial
+import pkg_resources
 import attr
 
 import numpy as np
@@ -19,6 +20,8 @@ def policy_func(P, i, j, k):
 
 @contextmanager
 def open_policy(ai_file): 
+    if ai_file is None: 
+        ai_file = pkg_resource.resource_filename('pig', 'game/models/pig_ai.hdf5')
     pfile = h5py.File(ai_file, 'r')
     policy_dset = pfile['policy']
     
