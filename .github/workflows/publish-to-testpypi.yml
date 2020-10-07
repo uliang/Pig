@@ -1,8 +1,9 @@
 name: Publish Pig to TestPyPI
 
 on:
-  release:
-    types: [prereleased, edited]
+  push:
+    branches:
+      - versions/**
 
 jobs:
   build-n-publish:
