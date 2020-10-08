@@ -1,5 +1,3 @@
-from itertools import product
-from functools import partial
 import numpy as np 
 from numpy.random import rand 
 
