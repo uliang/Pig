@@ -3,30 +3,22 @@ from functools import partial
 import numpy as np 
 from numpy.random import rand 
 
-from wasabi import msg, table, row
 from tqdm import tqdm
 
-def indexer(array): 
-    imax, jmax, kmax = array.shape
+def indexer(size): 
 
     for i,j in zip(*(reversed(id_arr) 
-                    for id_arr in np.triu_indices(imax))):
-        for k in range(100-i-1, -1, -1): 
-            yield i,j,k 
-        if i==j:
-            continue
-        for k in range(100-j-1, -1, -1): 
-            yield j,i,k 
-
+                    for id_arr in np.triu_indices(size))):
+        yield i,j 
 
 def training_loop(max_iter=10, tol=0.001): 
     P = rand(100, 100, 100)
 
-    cache_indexes = list(indexer(P))
+    score_partition = list(indexer(100))
             
-    bar_fmt = '{elapsed}|{bar}|{percentage:.0f}% {postfix[0]}{postfix[1][Delta]:>6.4f} [{rate_fmt}]'
-    with tqdm(total=len(cache_indexes), ncols=60, unit_scale=1, postfix=["Delta=", dict(Delta=0)], 
-                bar_format=bar_fmt, leave=False) as t:
+    bar_fmt = '{elapsed}|{bar}|{percentage:.0f}% [{rate_fmt}]'
+    with tqdm(total=len(score_partition), ncols=60, unit_scale=1, 
+              bar_format=bar_fmt, leave=False) as t:
         """
         The estimated value for each action is:
         'hold' = V(s'), 
@@ -36,23 +28,34 @@ def training_loop(max_iter=10, tol=0.001):
 
         R_ss' = 1 iff s -> s' is a transition from nonwinning to winning.
         """ 
-        for i, j, k in cache_indexes:   # indexer ensures we only loop over non winning states
+        for I, J in score_partition:   
             delta = 0 
             for _ in range(max_iter): 
-                v = P[i,j,k]
-                roll = 1 - P[j,i,0]         # rolled a 1. 
-                
-                for m in range(2,7): 
-                    roll += P[i,j, k+m] if m < 100-i-k else 1   # reward only transition to winning states
+                i,j = I,J
+                switched = 0 
 
-                roll /= 6
-                
-                hold = 1 - P[j, i+k, 0] if i+k < 100 else 0     # So that the AI learns to hold in a 
-                                                                # nonwinning state
-                P[i, j, k] = max(hold, roll) 
-                delta = np.abs(v-P[i,j,k])
-                
-                t.postfix[1]["Delta"] = delta
+                while switched < 2: 
+                    for k in range(100-i): 
+                        v = P[i,j,k]
+
+                        roll = 1 - P[j,i,0]                             # rolled a 1. 
+                        
+                        for m in range(2,7): 
+                            roll += P[i,j, k+m] if m < 100-i-k else 1   # reward only transition to winning states
+
+                        roll /= 6
+                        
+                        hold = 1 - P[j, i+k, 0] if i+k < 100 else 0     # So that the AI learns to hold in a 
+                                                                        # nonwinning state
+                        P[i, j, k] = max(hold, roll) 
+                    
+                        delta = max(np.abs(v-P[i,j,k]), delta)
+
+                    if i != j:
+                        i,j = J,I
+                        switched += 1 
+                    else:
+                        break 
 
                 if delta < tol:
                     break
