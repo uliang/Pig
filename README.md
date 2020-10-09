@@ -48,8 +48,10 @@ and your turn score is `k`.
 
 In this way, you can customize your own AI by specifying the chances of winning from a given game state. The 
 AI calculates whether to 'hold' or 'roll' by selecting the maximum of the two computations:
-$$ P^{hold}_{i,j,k}= 1-P_{j,i+k,0}$$
-and $$ P^{roll}_{i,j,k}=\frac 16 (1-P_{j,i,0} + P_{i,j,k+2}+\ldots+P_{i,j,k+6}) $$
+``` 
+P^{hold}_{i,j,k}= 1-P_{j,i+k,0}
+P^{roll}_{i,j,k}= 1/6 * (1-P_{j,i,0} + P_{i,j,k+2} + ... + P_{i,j,k+6})
+```
 
 It does seem difficult then to design a good policy matrix from scratch. The `pig train` command assists us by training the
 policy matrix using value iteration.
