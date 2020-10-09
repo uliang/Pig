@@ -11,9 +11,14 @@ def policy_func(P, i, j, k):
     if i + k >= 100:
         return 'hold' 
     
+    roll = 1-P[j,i,0] 
+    for m in range(2,7):
+        roll += P[i,j,k+m] if m < 100-i-k else 1 
+    roll /= 6 
+
     actions = [
         (1-P[j, i+k, 0], 'hold'),
-        ( (P[i,j,k+2:k+7].sum() + 1-P[j,i,0])/6, 'roll' )
+        ( roll, 'roll' )
     ]
     return max(actions)[1]
 

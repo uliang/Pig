@@ -21,7 +21,7 @@ def indexer(size):
         ...
         (0, 0)
     """
-    for s_part in range(198,-1, -1):
+    for s_part in range(198, -1, -1):
         for i in range(max(0,s_part-99), math.ceil((s_part+1)/2)):
             yield i, s_part-i 
 
