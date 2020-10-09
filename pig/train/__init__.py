@@ -38,12 +38,12 @@ def training_loop(max_iter=10, tol=0.001):
               bar_format=bar_fmt, leave=False) as t:
         for i, j in score_partition:   
             for _ in range(max_iter):
-                v = np.r_[P[i, j, 0:100-i], P[j, i, 0:100-j]].T
+                v = np.r_['c', P[i, j, 0:100-i], P[j, i, 0:100-j]]
                 
-                b_ = np.r_[set_b(100-i), set_b(100-j)].T
+                b_ = np.r_['c', set_b(100-i), set_b(100-j)]
 
-                hold = np.array([1-P[j, _i, 0] for _i in range(i,100)] 
-                                  + [1-P[i, _j, 0] for _j in range(j,100)]).T 
+                hold = np.r_['c', [1-P[j, _i, 0] for _i in range(i,100)], 
+                                  [1-P[i, _j, 0] for _j in range(j,100)]]
 
                 A = np.c_[[set_ones(100-i, k+2, k+7) for k in range(100-i)]]
                 B = np.c_[[-1*set_ones(100-j, 0, 1) for k in range(100-i)]]
@@ -54,8 +54,8 @@ def training_loop(max_iter=10, tol=0.001):
 
                 v_temp = np.maximum((M @ v + b_)/6, hold)
                 
-                P[i, j, 0:100-i] = v_temp[0, 0:100-i]
-                P[j, i, 0:100-j] = v_temp[0, 100-i:]
+                P[i, j, 0:100-i] = v_temp[0:100-i, 0].T
+                P[j, i, 0:100-j] = v_temp[100-i:, 0].T
 
                 delta = np.abs(v-v_temp).max()
 
