@@ -93,13 +93,23 @@ the `pig play` command.
 ## Building the application
 We use the build library `pep517` which can be installed using `pip install pep517`. 
 
-Clone this repository and run 
+To build an installable package, you will first need to clone this repository and train the policy matrix
+first before building the package. After cloning this repository, 
 
 ```bash
+# Train the Pig AI and save policy matrix as a hdf5 dataset to pig_ai.hdf5.
+# Extension is added automatically. 
+
+$ python -m pig train pig/game/pig_ai
+
+# Execute build script
 $ python -m pep517.build .
 ``` 
-
-from the root folder of the project directory. 
+Once the build has completed 
+```bash
+pip install dist/pig-0.*.*.tar.gz
+```
+to pip install from your local distribution directory. 
 
 ## References 
 [1] The UMAP Journal 25(1) (2004), pp. 25–47
