@@ -15,11 +15,6 @@ from wasabi import msg
 
 from .game import game_loop
 from .train import training_loop
-from .game.player_types import Player, Npc
-from .game.dice import Dice
-from .game.ai_wrapper import open_policy
-from .game.constants import const
-
 
 class Application: 
     "Welcome to the Pig Application"
@@ -88,28 +83,9 @@ class Application:
             str)=None, 
     ):
         "Play Pig" 
-        msg.info( "playing Pig. Press X to exit.")
-        player_gen = Player.from_input()
-
-        p1 = next(player_gen)        
-
-        if num_players == 1:  
-            with open_policy(ai_file) as policy: 
-                p2 = Npc(name="PigMachine", policy=policy)
-        
-        elif num_players == 2:
-            p2 = next(player_gen)
-
-        coin = Dice(1, 2, None)
-        if coin() == 1: 
-            players = [p1, p2]
-            msg.text(f"{p1} goes first.")
-        else:
-            players = [p2, p1]
-            msg.text(f"{p2} goes first.")
-        
-        exit_code = game_loop(*players)
-        
+        msg.info( "Playing Pig. Press X to exit.")
+        game_loop(num_players, ai_file) 
+       
     def q(self): 
         "Quit application" 
         raise plac.Interpreter.Exit
