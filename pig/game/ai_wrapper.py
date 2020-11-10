@@ -1,7 +1,6 @@
 from contextlib import contextmanager 
 from functools import partial
 import pkg_resources
-import attr
 
 import numpy as np
 import h5py 
