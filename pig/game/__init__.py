@@ -12,11 +12,10 @@ Player = namedtuple('Player', ['name', 'decision_function'])
 
 def create_player(i, decision_function=None):
 
-    msg.text(f"Player {i} name (Press <Enter> to accept default): ")
-
     if decision_function:
         p_name = "PigMachine"
     else:
+        msg.text(f"Player {i} name (Press <Enter> to accept default): ")
         p_name = input()
         p_name = p_name if p_name else f"P{i}"
    
