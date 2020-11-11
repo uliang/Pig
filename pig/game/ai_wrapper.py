@@ -15,12 +15,9 @@ def policy_func(P, i, j, k):
         roll += P[i,j,k+m] if m < 100-i-k else 1 
     roll /= 6 
 
-    actions = [
-        (1-P[j, i+k, 0], 'hold'),
-        ( roll, 'roll' )
-    ]
-    return max(actions)[1]
+    actions = 'roll' if roll >= 1-P[j, i+k, 0] else 'hold'
 
+    return actions
 
 @contextmanager
 def open_policy(ai_file): 
